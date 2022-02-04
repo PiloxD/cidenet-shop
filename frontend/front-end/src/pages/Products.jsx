@@ -6,6 +6,7 @@ import Products from "../components/Products";
 import { mobile } from "../responsive";
 import { Checkbox } from '@mui/material';
 
+
 const Container = styled.div``;
 
 
@@ -16,7 +17,7 @@ const Products1 = () => {
     <Container>
       <Navbar />
       <Products />
-      <Outstanding />
+      <Outstanding/>
       <Footer />
     </Container>
   );

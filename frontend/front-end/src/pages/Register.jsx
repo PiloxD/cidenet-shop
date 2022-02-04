@@ -65,76 +65,161 @@ const Button = styled.button`
   cursor: pointer;
   border-radius: 8px;
 `;
+const Filter = styled.div`
+  flex: 1;
+  margin: 5px;
+  height: 10px;
+  display: flex;
+  ${mobile({ width: "0px 20px", display: "flex", flexDirection: "column" })}
+`;
+
+const FilterText = styled.span`
+  font-size: 10px;
+  font-weight: 100;
+  margin-right: 20px;
+  ${mobile({ marginRight: "0px" })}
+`;
+
+const Select = styled.select`
+  padding: 1px;
+  margin-right: 20px;
+  border-radius: 10px;
+  border-color: white;
+  margin: 10px 0px;
+  font-size: 25px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  ${mobile({ margin: "10px 0px" })}
+`;
+const Option = styled.option`
+  margin: 20px 0px;
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 3px;
+`;
 
 export default class Register extends Component {
-  state = {
-      username: '',
-      email: '',
-      password: ''
-  }
+  constructor() {
+    super()
+    this.state.typedocument = '';
+    this.handleDropdownChange = this.handleDropdownChange.bind(this);
    
-  onChangeUsername = (e)  => {
-      this.setState({
-          username: e.target.value
-      })
+  }
+  state = {
+    typedocument: '',
+    document: Number,
+    name: '',
+    lastname: '',
+    email: '',
+    password: '',
+    password2: '',
+  }
+  handleDropdownChange(e) {
+    this.state.typedocument = e.target.value;
+  
+  }
+
+  onChangeDocument = (e) => {
+    this.setState({
+      document: e.target.value
+    })
 
   }
-  onChangeEmail = (e)  => {
-      this.setState({
-          email: e.target.value
-      })
+  onChangeName = (e) => {
+    this.setState({
+      name: e.target.value
+    })
 
   }
-  onChangePassword = (e)  => {
-      this.setState({
-          password: e.target.value
-      })
+  onChangeLastname = (e) => {
+    this.setState({
+      lastname: e.target.value
+    })
 
   }
+
+  onChangeEmail = (e) => {
+    this.setState({
+      email: e.target.value
+    })
+
+  }
+  onChangePassword = (e) => {
+    this.setState({
+      password: e.target.value
+    })
+
+  }
+
+  handleConfirmPassword = async e => {
+    this.setState({
+      password2: e.target.value
+    })
+
+  };
 
   onSubmit = async e => {
-      e.preventDefault();
-      await axios.post('http://localhost:8080/api/auth/register', {
-          username: this.state.username,
-          email: this.state.email,
-          password: this.state.password
-      })
-      console.log(e);
-      
+    e.preventDefault();
+    await axios.post('http://localhost:8080/api/auth/register', {
+      document: this.state.document,
+      name: this.state.name,
+      lastname: this.state.lastname,
+      email: this.state.email,
+      password: this.state.password
+    })
+    console.log(e);
+    if (e.handleConfirmPassword !== e.onChangePassword) {
+      await swal({
+        title: "Error!",
+        text: "Su contraseña no coincide",
+        icon: "error"
+      });
+    } else {
 
-      
+
       swal({
         title: "¡Listo!",
         text: "Su usuario ha sido registrado",
         icon: "success"
-    });
+      });
 
+    }
   }
 
 
 
   render() {
-      const isEnabled = this.state.username.length > 0 && this.state.email.length > 0 && this.state.password.length > 0;
-      return (
-        <div>
-          <Navbar2/>
-          <Container>
+    return (
+      <div>
+        <Navbar2 />
+        <Container>
           <Wrapper>
             <Title>Registrarse</Title>
-            <Form onSubmit = {this.onSubmit}>
-              <Input type = "text" onChange={this.onChangeUsername} placeholder="Usuario" />
-              <Input type = "email"  onChange={this.onChangeEmail}  placeholder="Correo" />
-              <Input type = "password" onChange={this.onChangePassword} placeholder="Contraseña" />
+            <Form onSubmit={this.onSubmit}>
+              <Filter>
+                <FilterText>
+                  <Select onChange={this.handleDropdownChange}>
+                    <Option value='CC'  > Cédula de ciudadanía </Option>
+                    <Option value='TI' > Tarjeta de identidad </Option>
+                  </Select>
+                </FilterText>
+              </Filter>
+              <Input type="number" onChange={this.onChangeDocument} placeholder="Documento" />
+              <Input type="text" onChange={this.onChangeName} placeholder="Nombre" />
+              <Input type="text" onChange={this.onChangeLastname} placeholder="Apellido" />
+              <Input type="email" onChange={this.onChangeEmail} placeholder="Correo" />
+              <Input type="password" onChange={this.onChangePassword} placeholder="Contraseña" />
+              <Input type="password" onChange={this.handleConfirmPassword} placeholder=" Confirmar Contraseña" />
               <Agreement>
-              Al hacer clic en "Crear", aceptas nuestras condiciones y  la política de tratamiento datos personales.   <b> Ley 1581 de 2012</b>
+                Al hacer clic en "Crear", aceptas nuestras condiciones y  la política de tratamiento datos personales.   <b> Ley 1581 de 2012</b>
               </Agreement>
-              <Button  button="true" disabled={!isEnabled} type="submit">Crear</Button>
+              <Button  type="submit">Crear</Button>
             </Form>
           </Wrapper>
         </Container>
-        </div>
-        
-      );
-    };
-  }
-    
+      </div>
+
+    );
+  };
+}
+

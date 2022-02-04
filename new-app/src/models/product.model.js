@@ -5,7 +5,7 @@ const productSchema = new Schema(
   {
     name: String,
     marca: String,
-    category: String, 
+    category: String,
     desc: String,
     size: String,
     color: String,

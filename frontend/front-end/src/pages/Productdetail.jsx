@@ -10,7 +10,12 @@ const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 50px;
   display: flex;
-  ${mobile({ padding: "10px", flexDirection:"column" })}
+  ${mobile({ padding: "10px", flexDirection: "column" })}
+`;
+const Wrapper2 = styled.div`
+  padding: 50px;
+  display: flex;
+  ${mobile({ padding: "10px", flexDirection: "column" })}
 `;
 
 const ImgContainer = styled.div`
@@ -18,8 +23,8 @@ const ImgContainer = styled.div`
 `;
 
 const Image = styled.img`
-  width: 100%;
-  height: 90vh;
+  width: 10%;
+  height: 10vh;
   object-fit: cover;
   ${mobile({ height: "40vh" })}
 `;
@@ -104,7 +109,7 @@ const Amount = styled.span`
 
 const Button = styled.button`
   padding: 15px;
-  border: 2px solid teal;
+  border: 2px solid #9377CB;
   background-color: white;
   cursor: pointer;
   font-weight: 500;
@@ -114,51 +119,28 @@ const Button = styled.button`
   }
 `;
 
-const ProductDetail = () => {
+const ProductDetail = ({products}) => {
   return (
     <Container>
       <Navbar />
       <Wrapper>
         <ImgContainer>
-          <Image src="https://i.ibb.co/S6qMxwr/jean.jpg" />
+          <Image/>
+          <Title></Title>
+            <Desc>
+            </Desc>
+            <Price>$</Price>
+            <AddContainer>
+              <AmountContainer>
+              </AmountContainer>
+              <Button>Agregar al carrito</Button>
+            </AddContainer>
         </ImgContainer>
-        <InfoContainer>
-          <Title>Denim Jumpsuit</Title>
-          <Desc>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-            venenatis, dolor in finibus malesuada, lectus ipsum porta nunc, at
-            iaculis arcu nisi sed mauris. Nulla fermentum vestibulum ex, eget
-            tristique tortor pretium ut. Curabitur elit justo, consequat id
-            condimentum ac, volutpat ornare.
-          </Desc>
-          <Price>$ 20</Price>
-          <FilterContainer>
-            <Filter>
-              <FilterTitle>Color</FilterTitle>
-              <FilterColor color="black" />
-              <FilterColor color="darkblue" />
-              <FilterColor color="gray" />
-            </Filter>
-            <Filter>
-              <FilterTitle>Size</FilterTitle>
-              <FilterSize>
-                <FilterSizeOption>XS</FilterSizeOption>
-                <FilterSizeOption>S</FilterSizeOption>
-                <FilterSizeOption>M</FilterSizeOption>
-                <FilterSizeOption>L</FilterSizeOption>
-                <FilterSizeOption>XL</FilterSizeOption>
-              </FilterSize>
-            </Filter>
-          </FilterContainer>
-          <AddContainer>
-            <AmountContainer>
-              <Remove />
-              <Amount>1</Amount>
-              <Add />
-            </AmountContainer>
-            <Button>ADD TO CART</Button>
-          </AddContainer>
-        </InfoContainer>
+        <Wrapper2>
+          <InfoContainer>
+            
+          </InfoContainer>
+        </Wrapper2>
       </Wrapper>
       <Footer />
     </Container>

@@ -1,8 +1,8 @@
-const { Schema, model} = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 const roleSchema = new Schema(
     {
-        name: String, 
+        name: String,
     },
     {
         versionKey: false,

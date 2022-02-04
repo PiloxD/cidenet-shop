@@ -1,6 +1,6 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import styled from "styled-components";
-import React, { useState, useEffect, Component, useContext } from "react";
+import React, { useState, Component } from "react";
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -8,12 +8,9 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import DialogTest from "./DialogTest"
 import { mobile } from "../responsive";
 import Slide from '@mui/material/Slide';
-import axios from 'axios';
-
-
+import DialogStockComponent from './DialogStockComponent';
 
 const Info = styled.div`
   opacity: 0;
@@ -32,28 +29,21 @@ const Info = styled.div`
 `;
 const Container = styled.div`
   flex: 1;
-  margin: 5px;
+  margin: 10px;
   min-width: 280px;
-  height: 350px;
+  height: 450px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #F5F3FF;
+  background-color: #ffffd6;
   position: relative;
 
   &:hover ${Info}{
     opacity: 1;
   }
 `;
-const ProductContainer = styled.div`
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-`;
-
-
 const Image = styled.img`
-  height: 50%;
+  height: 38%;
   z-index: 2;
 `;
 const ImageDialog = styled.img`
@@ -136,53 +126,20 @@ const Option = styled.option`
 `;
 
 
+const OutstandingProducts = ({ products }) => {
 
-const Product = ({ product }) => {
-
-  const [open, setOpen] = useState(false);
-  const [stocks, setStocks] = useState([]);
-  const [test, setTest] = useState();
 
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
 
-
-  const handleClickOpen = async () => {
-    // const toArray = [];
-    // try {
-    //   const res = await axios.get(`http://localhost:8080/api/stock/stock/getStock/${product.name}`);
-    //   console.log(res)
-    //   toArray.push(res.data)
-    //   setTest(toArray)
-    // } catch (error) {
-
-    // }
-    // axios.get(`http://localhost:8080/api/stock/stock/getStock/${product.name}`)
-    //   .then(res => {
-    //     const toArray = [];
-    //     console.log("res: ", res)
-    //     res.data.map((stock) => {
-    //       toArray.push(stock)
-    //       console.log("stock: ", stock)
-    //     })
-    //     setStocks(old => [...old, ...toArray])
-    //     // console.log("toArray: ", toArray)
-    //     // setStocks(toArray);
-    //     console.log("stocks ", stocks)
-    //   })
+  const [open, setOpen] = useState(false);
 
 
-    // const result = product.views + 1;
-    // axios.put(`http://localhost:8080/api/products/update/views/${product.name}/${result}`)
+  const handleClickOpen = () => {
     setOpen(true);
-
   };
-
-  // useEffect(() => {
-  //   handleClickOpen();
-  // }, []);
 
   const handleClose = () => {
     setOpen(false);
@@ -191,12 +148,13 @@ const Product = ({ product }) => {
     window.location.reload(false);
   };
 
+
   return (
-    <Container key={product._id}  >
-      <Image src={product.imgURL} />
+    <Container key={products._id}  >
+      <Image src={products.imgURL} />
       <Info>
-        <Name >{product.name} </Name>
-        <Price  >${product.price}</Price>
+        <Name src={products.name}>{products.name}  </Name>
+        <Price src={products.price} >${products.price}</Price>
         <IconButton onClick={handleClickOpen}>
           <Icon>
             <OpenInNewIcon />
@@ -204,75 +162,39 @@ const Product = ({ product }) => {
         </IconButton>
       </Info>
       <div>
-        <DialogTest 
-        product={product} 
-        open={open} 
-        handleClose={handleClose} 
-        refreshPage={refreshPage} 
-        Transition={Transition} 
-        Form={Form} 
-        ImageDialog={ImageDialog} 
-        FilterText={FilterText} 
-        //Select={Select}
-        Option={Option}
-        Input={Input}/>
-        <>
-          {/* <Dialog
+        <Dialog
           open={open}
           TransitionComponent={Transition}
           keepMounted
           onClose={handleClose, refreshPage}
           aria-describedby="alert-dialog-slide-description"
-          fullWidth
-          maxWidth="md"
         >
-          <DialogTitle>{product.name}  </DialogTitle>
+          <DialogTitle>{products.name}</DialogTitle>
           <DialogContent>
-            <ImageDialog src={product.imgURL} />
+            <ImageDialog src={products.imgURL} />
             <DialogContentText id="alert-dialog-slide-description">
-              {product.desc}
+              {products.desc}
             </DialogContentText>
             <DialogContentText>
-              Precio: $ {product.price}
+              $ {products.price}
             </DialogContentText>
             <DialogContentText>
-              Color:  {product.color}
+              Color:  {products.color}
             </DialogContentText>
             <DialogContentText>
-              Marca: {product.marca}
+              Marca: {products.marca}
             </DialogContentText>
-            <div  >
-              <DialogContentText>
-                <FilterText>
-                  <DialogContentText>
-                    Talla: 
-                    <Select >
-                      <Option   >  </Option>
-                    </Select>
-                  </DialogContentText>
-                </FilterText>
-              </DialogContentText>
-              <DialogContentText>
-                <Form>
-                  <Input placeholder='Stock' />
-                </Form>
-                Disponibles:
-              </DialogContentText>
-            </div>
+            <DialogStockComponent />
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose, refreshPage} >Cerrar</Button>
             <Button onClick={handleClose}>Agregar al carrito</Button>
           </DialogActions>
-        </Dialog> */}
-        </>
+        </Dialog>
       </div>
     </Container>
-
-
-
   );
 };
 
-export default Product;
+export default OutstandingProducts;
 
