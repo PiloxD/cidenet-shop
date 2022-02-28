@@ -83,3 +83,10 @@ module.exports.deleteProductById = async (req, res) => {
   // code 200 is ok too
   res.status(204).json();
 };
+
+module.exports.getProductsByName = async (req, res) => {
+  const { nameProduct } = req.params;
+  const product = await Product.find({ name: nameProduct });
+  return res.json(product);
+
+};

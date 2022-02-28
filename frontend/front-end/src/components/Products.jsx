@@ -3,20 +3,17 @@ import Product from "./Product";
 import axios from "axios";
 import { mobile } from "../responsive";
 import React, { Component } from "react";
-import Box from '@mui/material/Box';
-import FormLabel from '@mui/material/FormLabel';
-import FormControl from '@mui/material/FormControl';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
-import Checkbox from '@mui/material/Checkbox';
 import { Search } from "@material-ui/icons";
+import { Divider } from "@material-ui/core";
 
-const CheckboxContainer = styled.div`
+const FilterContainer = styled.div`
 flex: 1;
 margin: 10px;
 height: 300px;
+flex-direction: column;
 display: flex;
+width: 100%;
+min-width: 100%;
 align-items: center;
 justify-content: center;
 ${mobile({ width: "0px 20px", display: "flex", flexDirection: "column" })}
@@ -55,7 +52,7 @@ const Select = styled.select`
   border-radius: 10px;
   border-color: white;
   margin: 50px 0px;
-  font-size: 45px;
+  font-size: 30px;
   font-weight: 500;
   letter-spacing: 3px;
   align-items: center;
@@ -70,10 +67,12 @@ const Option = styled.option`
   align-items: center;
   justify-content: center;
 `;
-const SearchDiv = styled.div``;
+const SearchDiv = styled.div`
+  display: inline-flex;
+  align-items: center;
+`;
 
 const SearchContainer = styled.div`
-  border: 0.5px solid lightgray;
   display: inline-flex;
   align-items: center;
   margin-left: 25px;
@@ -81,7 +80,11 @@ const SearchContainer = styled.div`
   padding: 5px;
 `;
 const Input = styled.input`
-  border: none;
+  flex: 1;
+  min-width: 40%;
+  padding: 10px;
+  margin: 5px 5px 5px 5px;
+  border-radius: 5px;
   ${mobile({ width: "50px" })}
 `;
 
@@ -171,136 +174,31 @@ export default class Products extends Component {
           this.setState({ products: products });
         })
     }
-    // else if (this.state.gender === 'hombre'){
-    //   axios.get(`http://localhost:8080/api/products/filter/hombre/${this.state.sizef}/${this.state.colorf}`)
-    //     .then(res => {
-    //       const products = res.data;
-    //       console.log(res)
-    //       this.setState({ products: products });
-    //     })
-    // }
-    // else if (this.state.gender === 'mujer'){
-    //   axios.get(`http://localhost:8080/api/products/filter/hombre/${this.state.sizef}/${this.state.colorf}`)
-    //     .then(res => {
-    //       const products = res.data;
-    //       console.log(res)
-    //       this.setState({ products: products });
-    //     })
-    // }
   }
   componentDidMount() {
     this.getProducts()
   };
 
-
-
-
   render() {
     return (
       <Container>
-        <SearchDiv>
-          <SearchContainer>
-            <Input type="text" onChange={this.onChangeSearch} placeholder="Buscar" />
-            <Search style={{ color: "gray", fontSize: 16 }} />
-          </SearchContainer>
-        </SearchDiv>
-        <Filter>
-
-          <FilterText>
-            <Select onChange={this.handleDropdownChange}>
-              <Option value='todos'  > Todos </Option>
-              <Option value='hombre'  > Hombre </Option>
-              <Option value='mujer' > Mujer </Option>
-            </Select>
-          </FilterText>
-        </Filter>
-        {/* <CheckboxContainer>
-          <Box sx={{ display: 'flex' }}>
-            <FormControl onChange={this.handleChange1} sx={{ m: 3 }} component="fieldset" variant="standard">
-              <FormLabel component="legend">Talla</FormLabel>
-              <FormGroup>
-                <FormControlLabel
-
-                  control={
-                    <Checkbox name="XS" />
-                  }
-                  label="XS"
-                  value='XS'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox name="S" />
-                  }
-                  label="S"
-                  value='S'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox name="M" />
-                  }
-                  label="M"
-                  value='M'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox name="L" />
-                  }
-                  label="L"
-                  value='L'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox name="XL" />
-                  }
-                  label="XL"
-                  value='XL'
-                />
-              </FormGroup>
-              <FormHelperText>Filtrar por talla</FormHelperText>
-            </FormControl>
-            <FormControl onChange={this.handleChange2} component="fieldset" sx={{ m: 3 }} variant="standard">
-              <FormLabel component="legend">Color</FormLabel>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox name="azul" />
-                  }
-                  label="Azul"
-                  value='azul'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox name="blanco" />
-                  }
-                  label="Blanco"
-                  value='blanco'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox name="negro" />
-                  }
-                  label="Negro"
-                  value='negro'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox name="rojo" />
-                  }
-                  label="Rojo"
-                  value='rojo'
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox name="rosado" />
-                  }
-                  label="Rosado"
-                  value='rosado'
-                />
-              </FormGroup>
-              <FormHelperText>Filtrar por color</FormHelperText>
-            </FormControl>
-          </Box>
-        </CheckboxContainer> */}
+        <FilterContainer>
+          <Filter>
+            <FilterText>
+              <Select onChange={this.handleDropdownChange}>
+                <Option value='todos'  > Todos </Option>
+                <Option value='hombre'  > Hombre </Option>
+                <Option value='mujer' > Mujer </Option>
+              </Select>
+            </FilterText>
+          </Filter>
+          <SearchDiv>
+            <SearchContainer>
+              <Input type="text" onChange={this.onChangeSearch} size='30' placeholder="Buscar" />
+              <Search style={{ color: "white", fontSize: 26 }} />
+            </SearchContainer>
+          </SearchDiv>
+        </FilterContainer>
         <ProductsContainer>
           {this.state.products.map((product) => (
             <Product product={product} key={product._id} />

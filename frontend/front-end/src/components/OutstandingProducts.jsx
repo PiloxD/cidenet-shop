@@ -1,16 +1,12 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import styled from "styled-components";
-import React, { useState, Component } from "react";
+import React, { useState } from "react";
 import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import DialogTest from "./DialogTest"
 import { mobile } from "../responsive";
 import Slide from '@mui/material/Slide';
-import DialogStockComponent from './DialogStockComponent';
+
+
 
 const Info = styled.div`
   opacity: 0;
@@ -28,22 +24,27 @@ const Info = styled.div`
   cursor: pointer;
 `;
 const Container = styled.div`
+  border-color:#ffd932;
+  border-style:solid;
+  border-width:4px;
+  border-radius: 10px;
   flex: 1;
-  margin: 10px;
+  margin: 5px;
   min-width: 280px;
-  height: 450px;
+  height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ffffd6;
+  background-color: #F5F3FF;
   position: relative;
 
   &:hover ${Info}{
     opacity: 1;
   }
 `;
+
 const Image = styled.img`
-  height: 38%;
+  height: 50%;
   z-index: 2;
 `;
 const ImageDialog = styled.img`
@@ -82,7 +83,6 @@ const Form = styled.form`
   flex-direction: column;
   flex-wrap: wrap;
   size: 30;
-  
 `;
 
 const Input = styled.input`
@@ -103,19 +103,7 @@ const FilterText = styled.span`
   justify-content: center;
   ${mobile({ marginRight: "0px" })}
 `;
-const Select = styled.select`
-  padding: 1px;
-  margin-right: 5px;
-  border-radius: 5px;
-  border-color: white;
-  margin: 0px 0px;
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  align-items: center;
-  justify-content: center;
-  ${mobile({ margin: "10px 0px" })}
-`;
+
 const Option = styled.option`
   margin: 5px 0px;
   font-size: 25px;
@@ -126,35 +114,29 @@ const Option = styled.option`
 `;
 
 
-const OutstandingProducts = ({ products }) => {
+const OutstandingProducts = ({ product }) => {
 
+  const [open, setOpen] = useState(false);
 
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
-
-  const [open, setOpen] = useState(false);
-
-
-  const handleClickOpen = () => {
+  const handleClickOpen = async () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
   const refreshPage = () => {
     window.location.reload(false);
   };
-
-
   return (
-    <Container key={products._id}  >
-      <Image src={products.imgURL} />
+    <Container key={product._id}  >
+      <Image src={product.imgURL} />
       <Info>
-        <Name src={products.name}>{products.name}  </Name>
-        <Price src={products.price} >${products.price}</Price>
+        <Name >{product.name} </Name>
+        <Price  >${product.price}</Price>
         <IconButton onClick={handleClickOpen}>
           <Icon>
             <OpenInNewIcon />
@@ -162,35 +144,17 @@ const OutstandingProducts = ({ products }) => {
         </IconButton>
       </Info>
       <div>
-        <Dialog
+        <DialogTest
+          product={product}
           open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose, refreshPage}
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle>{products.name}</DialogTitle>
-          <DialogContent>
-            <ImageDialog src={products.imgURL} />
-            <DialogContentText id="alert-dialog-slide-description">
-              {products.desc}
-            </DialogContentText>
-            <DialogContentText>
-              $ {products.price}
-            </DialogContentText>
-            <DialogContentText>
-              Color:  {products.color}
-            </DialogContentText>
-            <DialogContentText>
-              Marca: {products.marca}
-            </DialogContentText>
-            <DialogStockComponent />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose, refreshPage} >Cerrar</Button>
-            <Button onClick={handleClose}>Agregar al carrito</Button>
-          </DialogActions>
-        </Dialog>
+          handleClose={handleClose}
+          refreshPage={refreshPage}
+          Transition={Transition}
+          Form={Form}
+          ImageDialog={ImageDialog}
+          FilterText={FilterText}
+          Option={Option}
+          Input={Input} />
       </div>
     </Container>
   );

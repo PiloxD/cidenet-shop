@@ -53,32 +53,38 @@ module.exports.login = async (req, res) => {
       "roles"
     );
 
-    if (!user2Found) return res.status(200).json({ 
+    if (!user2Found) return res.status(200).json({
       message: "User Not Found",
       code: 400
 
     });
 
     const matchPassword = await User2.comparePassword(
-      req.body.password, 
-      user2Found.password 
+      req.body.password,
+      user2Found.password
     );
 
-    if (!matchPassword) 
-      return res.status(200).json({
+    if (!matchPassword)
+      return res.status(401).json({
         token: null,
         message: "Invalid Password",
         code: 401
       });
 
-    const token = jwt.sign({ id: user2Found._id }, config.SECRET, {
+    const userForToken = {
+      id: req.body._id,
+      email: req.body.email
+    }
+
+    const token = jwt.sign(userForToken, config.SECRET, {
       expiresIn: 86400, // 24 hours
     });
 
 
-    res.status(200).send('Ingresado correctamente')
-    res.json({ token });
-
+    res.send({
+      email: req.body.email,
+      token
+    })
   } catch (error) {
 
     console.log(error);

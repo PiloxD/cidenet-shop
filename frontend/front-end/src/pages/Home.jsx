@@ -5,6 +5,8 @@ import Outstanding from "../components/Outstanding";
 import Slider from "../components/Slider";
 
 const Home = () => {
+
+
   return (
     <div>
       <div>
@@ -13,8 +15,8 @@ const Home = () => {
       <div>
         <Slider />
       </div>
-      <Outstanding/>
-      <Footer/>
+      <Outstanding />
+      <Footer />
     </div>
   );
 };

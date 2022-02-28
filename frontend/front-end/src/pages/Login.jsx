@@ -1,10 +1,15 @@
 import styled from "styled-components";
-import {mobile} from "../responsive";
+import { mobile } from "../responsive";
 import Navbar2 from "../components/Navbar.login.register";
-import React, { Component } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from 'axios';
 import swal from "sweetalert";
 import Button from '@material-ui/core/Button';
+import { useNavigate } from 'react-router-dom';
+import useUser from "../hooks/useUser";
+import loginService from "../services/login";
+import { Link } from 'react-router-dom';
+
 
 const Container = styled.div`
   width: 100vw;
@@ -45,73 +50,99 @@ const Input = styled.input`
   padding: 10px;
   border-radius: 5px;
 `;
-
-
-
-const Link = styled.a`
-  margin: 10px 5px;
-  font-size: 15px;
-  text-decoration: underline;
-  cursor: pointer;
+const Logo = styled.h3`
+  font-weight: bold;
+  color: black;
+  padding: 15px;
+  text-decoration:none;
+  ${mobile({ fontSize: "24px" })}
 `;
 
-export default class Login extends Component {
-  
-  state = {
-      email: '',
-      password: ''
+export default function Login() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [user, setUser] = useState([])
+  const navigate = useNavigate()
+  const { login, isLogged } = useUser()
+
+
+  useEffect(() => {
+    if (isLogged) navigate('/')
+  }, [isLogged, navigate])
+
+
+
+  const onChangeEmail = (e) => {
+    setEmail(
+      e.target.value
+    )
   }
-  onChangeEmail = (e)  => {
-      this.setState({
-          email: e.target.value
+  const onChangePassword = (e) => {
+    setPassword(
+      e.target.value
+    )
+  }
+
+  const onSubmit = async e => {
+    e.preventDefault();
+    try {
+      const user = await loginService.login({
+        email,
+        password
       })
 
-  }
-  onChangePassword = (e)  => {
-      this.setState({
-          password: e.target.value
-      })
-
-  }
-
-  onSubmit = async e => {
-      e.preventDefault();
-      await axios.post('http://localhost:8080/api/auth/login', {
-          email: this.state.email,
-          password: this.state.password
-        
-      
-      })
+      window.localStorage.setItem(
+        'loggedAppUser', JSON.stringify(user)
+      )
+      setUser(user)
+      console.log("user: ", user);
+    } catch (e) {
+    }
+    await axios.post('http://localhost:8080/api/auth/login', {
+      email,
+      password
+    })
+    if ((window.localStorage.getItem('loggedAppUser') === '{"message":"User Not Found","code":400}') ||
+      (email === '' || email === null)) {
       swal({
-        title: "¡Bienvenido!",
-        text: "Ha ingresado correctamente",
-        icon: "success"
+        title: "¡Error!",
+        text: "Este usuario no existe",
+        icon: "error"
+      });
+      window.localStorage.removeItem('loggedAppUser')
+      navigate('/login')
+    }
+    else swal({
+      title: "¡Bienvenido!",
+      text: "Ha ingresado correctamente",
+      icon: "success"
     });
-      console.log(e);
-      
 
-      
-      }
-      
-      render () {
-        const isEnabled = this.state.email.length > 0 && this.state.password.length > 0;
-        
-        return (
-          <div>
-            <Navbar2/>
-            <Container>
-            <Wrapper>
-              <Title>Ingresar</Title>
-              <Form onSubmit = {this.onSubmit}>
-                <Input type = "email" onChange={this.onChangeEmail} placeholder="Email" />
-                <Input type = "password" onChange={this.onChangePassword} placeholder="Contraseña" />
-                <Button variant="contained"  color = "primary"  disabled={!isEnabled} type="submit"  href = "/" >INGRESAR</Button>
-                <Link href="/Register">¿No tienes cuenta?</Link>
-              </Form>
-            </Wrapper>
-          </Container>
-          </div>
-          
-        );
-      };
-      }
+    login({ email, password })
+
+  }
+
+  const { token } = user;
+
+  console.log(token)
+
+  return (
+    <div>
+      <Navbar2 />
+      <Container>
+        <Wrapper>
+          <Title>Ingresar</Title>
+          <Form onSubmit={onSubmit}>
+            <Input type="email" onChange={onChangeEmail} placeholder="Email" />
+            <Input type="password" onChange={onChangePassword} placeholder="Contraseña" />
+            <Button variant="contained" color="primary" type="submit"   >INGRESAR</Button>
+            <Link to="/Register"><Logo>¿No tienes cuenta?
+            </Logo></Link>
+          </Form>
+        </Wrapper>
+      </Container>
+    </div>
+
+  );
+}

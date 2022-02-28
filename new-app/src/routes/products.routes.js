@@ -5,6 +5,8 @@ const authJwt = require("../middlewares/authJwt");
 
 router.get("/products1", productsCtrl.getProducts);
 
+router.get("/products1/byname/:nameProduct", productsCtrl.getProductsByName);
+
 router.get("/filter/input/:search", productsCtrl.getProductsBySearchBar);
 
 router.get("/onlyone/:Id", productsCtrl.getProductById);

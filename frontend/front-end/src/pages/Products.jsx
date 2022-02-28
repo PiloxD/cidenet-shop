@@ -7,7 +7,15 @@ import { mobile } from "../responsive";
 import { Checkbox } from '@mui/material';
 
 
-const Container = styled.div``;
+const Container = styled.div`
+background: linear-gradient(
+  rgba(100, 100, 100, 0.3),
+  rgba(100, 100, 100, 0.3)
+),
+url("https://images.pexels.com/photos/994523/pexels-photo-994523.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")
+  center;
+background-size: cover;
+`;
 
 
 

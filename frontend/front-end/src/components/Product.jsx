@@ -1,13 +1,7 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import styled from "styled-components";
-import React, { useState, useEffect, Component, useContext } from "react";
+import React, { useState } from "react";
 import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import DialogTest from "./DialogTest"
 import { mobile } from "../responsive";
 import Slide from '@mui/material/Slide';
@@ -34,23 +28,22 @@ const Container = styled.div`
   flex: 1;
   margin: 5px;
   min-width: 280px;
+  border-radius: 10px;
   height: 350px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #F5F3FF;
+  background: linear-gradient(
+    rgba(250, 250, 250, 0.5),
+    rgba(250, 250, 250, 0.5)
+  );
+  background-color:  #F5F3FF;
   position: relative;
 
   &:hover ${Info}{
     opacity: 1;
   }
 `;
-const ProductContainer = styled.div`
-    padding: 20px;
-    display: flex;
-    flex-wrap: wrap;
-`;
-
 
 const Image = styled.img`
   height: 50%;
@@ -92,7 +85,6 @@ const Form = styled.form`
   flex-direction: column;
   flex-wrap: wrap;
   size: 30;
-  
 `;
 
 const Input = styled.input`
@@ -113,19 +105,7 @@ const FilterText = styled.span`
   justify-content: center;
   ${mobile({ marginRight: "0px" })}
 `;
-const Select = styled.select`
-  padding: 1px;
-  margin-right: 5px;
-  border-radius: 5px;
-  border-color: white;
-  margin: 0px 0px;
-  font-size: 20px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  align-items: center;
-  justify-content: center;
-  ${mobile({ margin: "10px 0px" })}
-`;
+
 const Option = styled.option`
   margin: 5px 0px;
   font-size: 25px;
@@ -136,61 +116,27 @@ const Option = styled.option`
 `;
 
 
-
 const Product = ({ product }) => {
 
   const [open, setOpen] = useState(false);
-  const [stocks, setStocks] = useState([]);
-  const [test, setTest] = useState();
 
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
 
-
-
   const handleClickOpen = async () => {
-    // const toArray = [];
-    // try {
-    //   const res = await axios.get(`http://localhost:8080/api/stock/stock/getStock/${product.name}`);
-    //   console.log(res)
-    //   toArray.push(res.data)
-    //   setTest(toArray)
-    // } catch (error) {
 
-    // }
-    // axios.get(`http://localhost:8080/api/stock/stock/getStock/${product.name}`)
-    //   .then(res => {
-    //     const toArray = [];
-    //     console.log("res: ", res)
-    //     res.data.map((stock) => {
-    //       toArray.push(stock)
-    //       console.log("stock: ", stock)
-    //     })
-    //     setStocks(old => [...old, ...toArray])
-    //     // console.log("toArray: ", toArray)
-    //     // setStocks(toArray);
-    //     console.log("stocks ", stocks)
-    //   })
-
-
-    // const result = product.views + 1;
-    // axios.put(`http://localhost:8080/api/products/update/views/${product.name}/${result}`)
+    const result = product.views + 1;
+    axios.put(`http://localhost:8080/api/products/update/views/${product.name}/${result}`)
     setOpen(true);
 
   };
-
-  // useEffect(() => {
-  //   handleClickOpen();
-  // }, []);
-
   const handleClose = () => {
     setOpen(false);
   };
   const refreshPage = () => {
     window.location.reload(false);
   };
-
   return (
     <Container key={product._id}  >
       <Image src={product.imgURL} />
@@ -209,68 +155,14 @@ const Product = ({ product }) => {
         open={open} 
         handleClose={handleClose} 
         refreshPage={refreshPage} 
-        Transition={Transition} 
+        Transition={Transition}  
         Form={Form} 
         ImageDialog={ImageDialog} 
         FilterText={FilterText} 
-        //Select={Select}
         Option={Option}
         Input={Input}/>
-        <>
-          {/* <Dialog
-          open={open}
-          TransitionComponent={Transition}
-          keepMounted
-          onClose={handleClose, refreshPage}
-          aria-describedby="alert-dialog-slide-description"
-          fullWidth
-          maxWidth="md"
-        >
-          <DialogTitle>{product.name}  </DialogTitle>
-          <DialogContent>
-            <ImageDialog src={product.imgURL} />
-            <DialogContentText id="alert-dialog-slide-description">
-              {product.desc}
-            </DialogContentText>
-            <DialogContentText>
-              Precio: $ {product.price}
-            </DialogContentText>
-            <DialogContentText>
-              Color:  {product.color}
-            </DialogContentText>
-            <DialogContentText>
-              Marca: {product.marca}
-            </DialogContentText>
-            <div  >
-              <DialogContentText>
-                <FilterText>
-                  <DialogContentText>
-                    Talla: 
-                    <Select >
-                      <Option   >  </Option>
-                    </Select>
-                  </DialogContentText>
-                </FilterText>
-              </DialogContentText>
-              <DialogContentText>
-                <Form>
-                  <Input placeholder='Stock' />
-                </Form>
-                Disponibles:
-              </DialogContentText>
-            </div>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose, refreshPage} >Cerrar</Button>
-            <Button onClick={handleClose}>Agregar al carrito</Button>
-          </DialogActions>
-        </Dialog> */}
-        </>
       </div>
     </Container>
-
-
-
   );
 };
 

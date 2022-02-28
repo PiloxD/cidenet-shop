@@ -63,8 +63,8 @@ export default class Outstanding extends Component {
             Estos son los productos más buscados:
           </Title>
           <OutstandingContainer>
-          {this.state.products.map((products) => (
-            <OutstandingProducts products={products} key={products._id} />
+          {this.state.products.map((product) => (
+            <OutstandingProducts product={product} key={product._id} />
           ))}
         </OutstandingContainer>
         </Wrapper>

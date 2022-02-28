@@ -1,14 +1,16 @@
 import { Badge } from "@material-ui/core";
-import { ExitToApp, ShoppingCartOutlined } from "@material-ui/icons";
+import { ShoppingCartOutlined } from "@material-ui/icons";
 import React from "react";
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Link } from 'react-router-dom';
 import CartDrawerComponent from './CartDrawerComponent';
+import Header from "./Header";
+import { useState } from "react";
 
 const Container = styled.div`
   height: 80px;
+  background: white;
   ${mobile({ height: "70px" })}
 `;
 const NavLink = styled(Link)`
@@ -48,6 +50,9 @@ const MenuItem = styled.div`
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 const Navbar = () => {
+  const [] = useState(0)
+  const cartQuantity = window.localStorage.getItem('cartQuantity')
+  const quantity = JSON.parse(cartQuantity)
   return (
     <Container>
       <Wrapper>
@@ -57,7 +62,6 @@ const Navbar = () => {
               <Logo>Cidenet Shop</Logo>
             </NavLink>
           </MenuItem>
-          <CartDrawerComponent/>
         </Left>
         <Right>
           <MenuItem>
@@ -66,16 +70,14 @@ const Navbar = () => {
             </NavLink>
           </MenuItem>
           <MenuItem>
-            <NavLink to="/Cart">
-              <Badge badgeContent={0} color="primary">
+            <Badge badgeContent={quantity} color="primary">
+              <CartDrawerComponent >
                 <ShoppingCartOutlined />
-              </Badge>
-            </NavLink>
+              </CartDrawerComponent>
+            </Badge>
           </MenuItem>
           <MenuItem>
-            <NavLink to="/Login"   >
-              <ExitToAppIcon />
-            </NavLink>
+            <Header></Header>
           </MenuItem>
         </Right>
       </Wrapper>
